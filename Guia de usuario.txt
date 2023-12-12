@@ -1,3 +1,9 @@
 1.- Creamos el una carpeta en el escritorio con el nombre que deseamos.
 2.- Creamos una anviente virtual dentro de esa carpeta y lo activamos con .\\activate.ps1
-3.- Vincular nuetro github con nuestro codigo, simpre se debe usar github.
+3.- Vincular nusetro github con nuestro codigo, simpre se debe usar github.
+4.- creamos un archivo .gitignore para ignorar todos los acrchivos que n queremos subir a github
+5.- en git hub buscamos gitignore python abrimos el archivo, copiamos todo lo que esta dentro y luego lo pegamos en nuetro archivo gitignore.
+6.-creamos el archivo requirements.txt
+7.- vamos intenet y colocamos https://pypi.org/project/Django/ alli vemos la version de Django que vamos a instalar
+8.- vamos al icono de control de versiones de VSC y le damos en publicar en github/hacerlo publico para que todos lo puedan ver.
+9.- 

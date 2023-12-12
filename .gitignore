@@ -5,6 +5,8 @@ __pycache__/
 
 # C extensions
 *.so
+# guia de usuario
+Guia de usuario.txt
 
 # Distribution / packaging
 .Python
