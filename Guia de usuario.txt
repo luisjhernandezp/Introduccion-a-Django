@@ -6,4 +6,11 @@
 6.-creamos el archivo requirements.txt
 7.- vamos intenet y colocamos https://pypi.org/project/Django/ alli vemos la version de Django que vamos a instalar
 8.- vamos al icono de control de versiones de VSC y le damos en publicar en github/hacerlo publico para que todos lo puedan ver.
-9.- 
+9.- dentro del entorno virtual: python -m pip install -r requirements.txt
+10.- Ahora vamos a crear nuestro proyecto: django-admin startproject core . (con core le estamos diciendo que estamos creando la primera aplicacion que va a contener la insformacion de nuestro proyecto)
+11.- luego vamos an la parte inferior izquierad de vsc y le damos en main y luego en crear rama y colocamos un nombre, en este caso: crear proyecto django.
+12.- Vamos a correr el servidor conpython manage.py runserver
+13.- Vemos que se crea el archivo db.sqlite3
+14.- Con ctrl+click en la dirreccion: http://127.0.0.1:8000/ vemos que corre nuestra pagina.
+15.- Ahora vamos al icom¡no de control de versiones colocamos "afregamo core" y le damos a + debajo de confirmacion.
+16.- 
