@@ -1,5 +1,5 @@
-1.- Creamos el una carpeta en el escritorio con el nombre que deseamos.
-2.- Creamos una anviente virtual dentro de esa carpeta y lo activamos con .\\activate.ps1
+1.- Creamos el una carpeta en el escritorio con el nombre que deseamos: Introduccion a Django
+2.- Creamos una ambiente virtual dentro de esa carpeta y lo activamos con .\\activate.ps1
 3.- Vincular nusetro github con nuestro codigo, simpre se debe usar github.
 4.- creamos un archivo .gitignore para ignorar todos los acrchivos que n queremos subir a github
 5.- en git hub buscamos gitignore python abrimos el archivo, copiamos todo lo que esta dentro y luego lo pegamos en nuetro archivo gitignore.
@@ -12,5 +12,329 @@
 12.- Vamos a correr el servidor conpython manage.py runserver
 13.- Vemos que se crea el archivo db.sqlite3
 14.- Con ctrl+click en la dirreccion: http://127.0.0.1:8000/ vemos que corre nuestra pagina.
-15.- Ahora vamos al icom¡no de control de versiones colocamos "afregamo core" y le damos a + debajo de confirmacion.
-16.- 
+15.- Ahora vamos al icono de control de versiones colocamos "agregamos core" y le damos a + debajo de confirmacion.
+16.- Ahora le damos en publicar rama o en el icono que tiene una nube con una flecha hacia arriba y si vamos a github vemos que ya aparecen los cambios hechos.
+17.- Podemos observar que ya hemos creado dos ramas: main y crear proyecto django.
+18.- Ahora hacemos un pull request al master(main) le damos en compare & pull request, luego en create pull request al master, luego em merge pull request y luego en confirmar merge
+19.- Ahora vamos a Code arriba  al izquierda vemos que master ya tiene la ultima actualizacion del proyecto se unio main con crear proyectp django.
+	NOTA: podemos crear ramas y luego unir con el master cada vez que queramos.
+20.- Ahora vamos a setting.py de la app core y agragamos la app core en INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'core',
+]
+21.- Ahora vamos hacer la migraciones, primero salimos del servidor con ctrl+c
+22.- escribimos: python manage.py migrate, con las migracionres se crean tablas en la base de datos.
+23.- Ahora corremos el servidor nuevamente: python manage.py runserver
+24.- Ahora salimos del servidor para crear un superusuario: python manage.py createsuperuser
+ usuario: luisjhernandezp4
+ email: admin@admin.com
+clave: admin123
+25.- Agregamos :ALLOWED_HOSTS = ['*'], las dos comillas y el asterisco, que podemos trabajron con cualquier host.
+26.- Vamos a cerar la primera vista, dentro de la app core creamos el archivo views.py
+27.- a modo de prueba colocamos:
+	from django.views.generic import View
+	from django.shortcuts import render
+
+
+	class HomeView(View):
+   		def get(self, request, *args, **kwaras):
+        	context={
+            
+        	}
+        	return render(request, '', context)
+28.-creamos una carpeta templates para guaradar todo los archivos html que tenga la app core
+29.- ahora en setting.py, primero importamos bien arriba: import os.
+30.- Ahora en TEMPLATES= [
+		'DIRS': [os.path.join(BASE_DIR, 'templates')],
+31.- Ahora dentro de lacarpeta templates creamos un archivo: index.html
+32.- ahora volvemos a views.py y agregamos el index.html asi: return render(request, 'index.html', context)
+33.- ahora vamos a urls.py e importamos: from .views import HomeView
+34.- Ahora vamos a añadir el path: path('', HomeView.as_view(), name='home')
+35.- Ahora veamos como funciona protejer nuestra informacion sensible como contraseñas, etc:
+	a) vamos a el archivo requirements.txt y colocamos django.environ==0.4.5( lo buscamos en internet) y luego:
+	pip install -r requirements.txt
+36.- en la app core creamos un aechivo .env, que es donde vamos a guardar todas las varibles que queremos protejer. contraseñas de correos etc.
+37.- Corremos el servidor  y en settings.py vamos arriba e importamos: import environ y alli mismo debajo env = environ.Env() y debajo environ.Env.read_env()
+38.- Ahora vamos SECRET_KEY y copiamos todo y la pegamos en el archivo .env y alli eliminamos las comillas y django-insecure- y los espacios.
+39.- Tambien hacemos lo mismo con DEBUG
+40.- Ahora en settings.py podemos cambiar a esto:
+	SECRET_KEY = os.environ.get('SECRET_KEY')
+	DEBUG = os.environ.get('DEBUG')
+41.- ahora vamos a crear la app blog. python manage.py startapp blog
+42.- Ahora vamos a settings.py y registramos la app blog en INSTALLED_APP
+43.- Ahora vamos a la app blog y creamos un archivo: urls.py
+44.- Ahora vamos a urls.py de la app core y agregamos el path del blog:path('blog/', include('blog.urls', namespace='blog')) 
+45.- Ahora entramos en el urls.py de la app blog y lo creamos:
+	from django.urls import path
+	app_name="blog"
+	urlpatterns = [
+    
+	]
+46.- Ahora cerramos todo y vamos a la app blog y abrimos views.py
+	importamos: from django.views.generic import View
+	y creamos la vista: 
+	class BlogListView(View):
+    		def get(self, request, *args, **kwaras):
+        		context={
+
+        		}
+    		return render(request, 'blog_list.html', context)
+47.- En la carpeta templates creamos el archivo blog_list.html
+48.- Ahora vamos a index.html y lo modificamos asi: hola, visita mi <a href="{% url "blog:home" %}">blog aqui</a>
+49.- ahora vamos a crear los modelos: vamos a models.py de la app blog.
+	class Post(models.Model):
+    	title=models.CharField(max_length=250)
+    	content=models.TextField()
+50.- Ahora voy a la app blog y borro la caepeta migrations para esserurarme que estan limpias.
+51.- ahora hago las migraciones: python manage.py makemigrations blog( las migraciones hay que hacerlas cada vez que hay cambios en los models.py
+52.- Ahora hacemos migrate: python manage.py migrate
+53.- ahora en la app blog en admin.py registramos el modelo:from .models import Post
+								 admin.site.register(Post)
+54.- en el modelo Post: agregamos:     def __str__(self):
+        				return self.title, para que se vea el nombre del titulo del post.
+55.- Con esto creamos un post desde el panel de administracion de Django(backend), agora vamos a crear un post desde la pagina web(frontend)
+56.- Ahora vamos a crear un archivo dentro de la app blog forms.py y creamos un formulario:
+	from django import forms
+	from .models import Post
+
+	class PostCreatePost(forms.ModelForm):
+    		class Meta:
+        		model=Post
+        		field=('title', 'content')
+57.- Ahora creamos la vista de este formulario en views.py de la app blog:
+from django.shortcuts import render
+from django.views.generic import View
+from .forms import PostCreateForm
+# Create your views here.
+
+class BlogListView(View):
+    def get(self, request, *args, **kwaras):
+        context={
+
+        }
+        return render(request, 'blog_list.html', context)
+
+
+class BlogCreateView(View):
+    def get(self, request, *args, **kwaras):
+        context={
+
+        }
+        return render(request, 'blog_create.html', context)
+
+    def post(self, request, *args, **kwaras):
+        context={
+
+        }
+        return render(request, 'blog_create.html', context)
+85.- Ahora vamos a el archivo urls.py de la app blog e importamos la vista que acabamos de crear:
+	from .views import BlogListView, BlogCreateView, ahora agregamos el path:
+	path('create/', BlogCreateView.as_view(), name='create') 
+86.- Ahora vamos a crear la logica para poder crear el post y poder acceder a la vista de crear.
+	en el blog_list: 
+	blog list 
+	<br>
+	<a href="{% url "blog:create" %}">Create</a>
+87.- Creamos en templates el archivo blog_create.html
+88.- Vamos al views.py de la app blog y modificamos el get asi:
+	class BlogCreateView(View):
+    		def get(self, request, *args, **kwargs):
+        	form=PostCreateForm()
+        		context={
+            		'form':form
+        		}
+        return render(request, 'blog_create.html', context)
+89.- ahora vamos al templates blog_create.html y modificamos asi:
+	title{{form.title}}
+	<br>
+	content{{form.content}}
+90.- Actualizamos: http://127.0.0.1:8000/blog/create/ y nos muetras los cuadros creados.
+91.- Ahora vamos nuevamente a views.py de la app blog y ahora nos ubicamos en el post:
+92.- volvemos al post_create.html y lo completamos:
+	<form method="POST">
+	{% csrf_token %}  <!--Siempre que se haga un formulario hay que colocarlo-->
+	title{{form.title}}
+	<br>
+	{{form.content}}
+	<button type="submit">Submit</button>
+	</form>
+93.- Volvemos al vies.py, importamos: from .models import Post y seguimos modificando el post:
+	    def post(self, request, *args, **kwaras):
+        	if request.method=="Post":
+            		form = PostCreateForm(request.POST)
+            			if form.is_valid():
+                		title = form.cleaned_data.get('title')
+                		content = form.cleaned_data.get('content')
+
+                		p, created = Post.objects.get_or_create(title=title, content=content)
+                		p.save()
+                		return redirect('blog:home')
+
+            			context={
+
+            			}
+        	return render(request, 'blog_create.html', context)
+94.- Ahora vamos y refrescamos la pagina y creamos nuetro segubdo post, ahora desde el frontend y lo verificamos en el 
+panel de administracion. y funciona ok. y nos redirijio al blog.
+95.- Ahora vamos a pasar a la vista de enlistar: Que vamos a enlistar los dos post o mas creados:
+	vamos a views.py de la app blog y vamos a BlogListView y modificamos: 
+	class BlogListView(View):
+    		def get(self, request, *args, **kwargs):
+        		posts = Post.objects.all()
+        		context={
+            		'posts':posts
+        		}
+        		return render(request, 'blog_list.html', context)
+96.- Vamos al templates bloglist.html y modificamos:
+	blog list 
+	<br>
+	{% for post in posts %}
+	{{post.title}}
+	{% endfor %}
+	<br>
+	<a href="{% url 'blog:create' %}">Create</a>, con esto enlistamos los posts
+97.- ahora tambien debemos ser capaces de ver esos posts desde el frontend:
+	vamos a views.py de la app blog y creamos otra vista:
+	class BlogDetailView(View):
+    		def get(self, request, *args, **kwargs):
+        		context={
+        		}
+        		return render(request, 'blog_detail.html', context)
+98.- ahora vamos a urls.py del blog y creamos el path de la vista:
+	path('<int:pk>/', BlogDetailView.as_view(), name='detail') e importamos BlogDetailView
+99.- Continuamos con la creacion de la vista:
+	class BlogDetailView(View):
+    		def get(self, request, pk, *args, **kwargs):
+        		post = get_object_or_404(Post, pk=pk)
+        		context={
+            		'post':post
+        		}
+       		return render(request, 'blog_detail.html', context)
+100.- Ahora vamos a blog_list y modificamos:
+	<blog list 
+	<br>
+	{% for post in posts %}
+	<a href="{% url 'blog:detail' post.id %}">{{post.title}}</a>
+	{% endfor %}
+	<br>
+	<a href="{% url 'blog:create' %}">Create</a>
+101.- Ahora creo el templates blog_detail.html
+	{{post.title}}
+	<br>
+	{{post.except}}
+	<br>
+	{{post.content}}, con esto estamos mostrando informacion de la base de datos....
+102.- Ahora vamos aprender como editar/actualizar un post. vamos al archivo views.py e importamos: UpdateView
+	creamos la vista: 
+
+103.- creamos el templates blog_update.html
+	<form method="POST">
+    	{% csrf_token %}
+    	title{{form.title}}
+    	<br>
+    	content{{form.content}}
+    	<button type="submit">Update</button>
+    	</form>
+104.- Ahora quiero que me redirija a 
+	debemos importar: from django.urls import reverse_lazy
+105.- creamos el path en urls.py e importamos BlogUpdateView
+	path('<int:pk>/update/', BlogDetailView.as_view(), name='update') 
+106.- ahora vamos nuevamente a bloglit y colocamos dentro del for lo siguiente:
+	<a href="{% url 'blog:update' post.id %}">Update</a>, con esto podemos actualizar los post
+	desde el frontend y lo vemos en el panel de administracion
+107.- Ahora vamos a aprender a borrar un post desde el frontend:
+	vamos as views.py e importamos: DeleteView y creamos la vista:
+	class BlogDeleteView(DeleteView):
+    	model=Post
+    	template_name='blog_delete.html'
+    	success_url=reverse_lazy('blog:home')
+108.- Vamos a templates y creamos el archivo blog_delete.html
+	<form method="POST">
+	{% csrf_token %}
+	{{form}}
+	<button type="submit">Delete</button>
+	</form>
+109.- Vamos a urls.py e importamos BlogDeleteView y Creamos el path:
+	path('<int:pk>/delete/', BlogDeleteView.as_view(), name='delete')  
+110.- Ahora vamos a blog_list.html y agragamos dentro del for:
+	<a href="{% url 'blog:delete' post.id %}">Delete</a>, guardamos actualizamos y ahora tenemos Delete.
+	blog list
+	Post1 Update Delete Post2 Update Delete Post3 Update Delete
+	Create
+111.- Ahora probaos a borrar el post3 y lo borra exitosamente y se observa en el panel de administracion que ya no esta.
+
+112.- Ahora vamos a darle estilo con django-tailwind 2.2.0: Va,os al archivo requirements.txt y agreagamos:
+	django-tailwind==2.2.0
+113.- Salimos del servidor y ejecutamos el comando: pip install -r requirements.txt y listo.
+114.- Vamoa ahora a settings.py y registramos al app tailwind:
+	INSTALLED_APPS = [
+	...
+       'core',
+    	'blog',
+    	'tailwind',
+	]
+115.- Ahora vamos a la linea de comando y escribimos: python manage.py tailwind init, enter y enter 
+116.- Registramos 'theme' en installed apps en settings.py
+117.- Debajo de installed apps colocar: TAILWIND_APP_NAME= 'theme'
+118.- Pegar esto mas abjao: INTERNAL_IPS = [
+    						"127.0.0.1",
+						]
+119.- El la linea de comandos: python manage.py tailwind install, para esto nos pidio instalar node.js
+120.- Luego agragamos esta linea en el setting.py: NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+121.- Volvemos a correr: python manage.py tailwind install y listo quedo instalado tailwind
+121.- Debememos crear un archivo base.html en nuestros templates, este archivo va acontener toda la informacion y estructura en general:
+{% load static tailwind_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% tailwind_css %}
+
+    <title>Document</title>
+</head>
+<body>
+    
+    {% block content %}{% endblock content %}
+
+</body>
+</html>
+122.- Ahora vamos al archivo index.html y cortamos lo que estaba alli y escribimos: 
+	{% extends "base.html" %}
+	{% block content %}hola, visita mi <a href="{% url 'blog:home' %}">blog aqui</a>{% endblock content %}
+123.- Ahora registramos en el settings.py:
+	INSTALLED_APPS = [
+  	# other Django apps
+  	'tailwind',
+  	'theme',
+  	'django_browser_reload'
+	]
+124.- Include django_browser_reload URL in your root urls.py:
+	path("__reload__/", include("django_browser_reload.urls"))  
+
+125.- Ahora abrimos otra terminal y en un terminal corremos el servidor y en el otro:tailwind con: python manage.py tailwind start
+126.- Asi le damos estilo con tailwind. nota: corriendo tailwind cuando hacemos cambios en los templates y guardamos automaticamente se ejejutan los cambio en el servidor y la pagina.
+	FIN DE LA INTRODUCCION A DJANGO.
+
+
+
+	
+
+
+	
+
+
+
+
+
+		
+
+
+
+
+
